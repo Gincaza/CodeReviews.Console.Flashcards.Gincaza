@@ -3,7 +3,7 @@ using Business_Logic.Interfaces;
 using Business_Logic.Messages;
 namespace Business_Logic;
 
-class BusinessLogic
+public class BusinessLogic
 {
     private IDataAcess dataAccess;
 
