@@ -6,8 +6,21 @@ namespace DataAccess;
 public class DataAccessRepository : IDataAcess
 {
     public string configString => throw new NotImplementedException();
-    public List<StacksDTO> FlashCards => throw new NotImplementedException();
-    public List<StacksDTO> Stacks => throw new NotImplementedException();
+    public List<FlashCardsDTO?> FlashCards
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public List<StacksDTO?> Stacks
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public bool addCodingSession()
     {
@@ -20,6 +33,11 @@ public class DataAccessRepository : IDataAcess
     }
 
     public bool createStacks(string title)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool updateFlashCard(int cardId, string? description, int? stackId)
     {
         throw new NotImplementedException();
     }
