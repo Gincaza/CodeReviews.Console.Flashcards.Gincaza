@@ -6,12 +6,9 @@ namespace DataAccess;
 public class DataAccessRepository : IDataAcess
 {
     public string configString => throw new NotImplementedException();
-    public List<FlashCardsDTO?> FlashCards
+    public List<FlashCardsDTO?> GetFlashCards(int stackId)
     {
-        get
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 
     public List<StacksDTO?> Stacks
@@ -38,6 +35,11 @@ public class DataAccessRepository : IDataAcess
     }
 
     public bool updateFlashCard(int cardId, string? description, int? stackId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool deleteFlashCard(int cardId)
     {
         throw new NotImplementedException();
     }

@@ -62,9 +62,9 @@ class BusinessLogic
         return new OperationResult(false, null);
     }
 
-    public List<FlashCardsDTO?> ListAllFlashCards()
+    public List<FlashCardsDTO?> ListAllFlashCards(int stackId)
     {
-        List<FlashCardsDTO?> flashCardsDTOs = dataAccess.FlashCards;
+        List<FlashCardsDTO?> flashCardsDTOs = dataAccess.GetFlashCards(stackId);
 
         if (flashCardsDTOs != null && flashCardsDTOs.Count > 0)
         {
@@ -84,5 +84,27 @@ class BusinessLogic
         }
 
         return new List<StacksDTO?>();
+    }
+
+    public List<FlashCardsDTO?> GetShuffledCards(int stackId)
+    {
+        List<FlashCardsDTO?> cardsList = dataAccess.GetFlashCards(stackId);
+
+        Shuffle(cardsList);
+
+        return cardsList;
+    }
+
+    private void Shuffle(List<FlashCardsDTO?> cards)
+    {
+        int n = cards.Count;
+        Random rng = new();
+
+        while (n > 1)
+        {
+            int k = rng.Next(n);
+            n--;
+            (cards[n], cards[k]) = (cards[k], cards[n]);
+        }
     }
 }
