@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{ADCD2726-FC4D-4134-86F9-8FBB681261A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashcardsApp", "FlashcardsApp\FlashcardsApp.csproj", "{2C5DF135-7CE4-CF06-F308-F23A5CEEACE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ADCD2726-FC4D-4134-86F9-8FBB681261A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADCD2726-FC4D-4134-86F9-8FBB681261A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADCD2726-FC4D-4134-86F9-8FBB681261A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5DF135-7CE4-CF06-F308-F23A5CEEACE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5DF135-7CE4-CF06-F308-F23A5CEEACE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5DF135-7CE4-CF06-F308-F23A5CEEACE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5DF135-7CE4-CF06-F308-F23A5CEEACE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
