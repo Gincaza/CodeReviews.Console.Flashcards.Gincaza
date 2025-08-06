@@ -1,6 +1,7 @@
 ﻿using Business_Logic.DTO;
 using Business_Logic.Interfaces;
 using Business_Logic.Messages;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Business_Logic;
 
@@ -13,7 +14,7 @@ class BusinessLogic
         this.dataAccess = dataAccess;
     }
 
-    public OperationResult createDeck(string title)
+    public OperationResult CreateDeck(string title)
     {
         bool success = dataAccess.createStacks(title);
 
@@ -47,6 +48,30 @@ class BusinessLogic
         }
 
         return new OperationResult(false, null);
+    }
+
+    public OperationResult DeleteFlashCard(int cardId)
+    {
+        bool result = dataAccess.deleteFlashCard(cardId);
+
+        if (result)
+        {
+            return new OperationResult(true, null);
+        }
+
+        return new OperationResult(false, null);
+    }
+
+    public List<FlashCardsDTO?> ListAllFlashCards()
+    {
+        List<FlashCardsDTO?> flashCardsDTOs = dataAccess.FlashCards;
+
+        if (flashCardsDTOs != null && flashCardsDTOs.Count > 0)
+        {
+            return flashCardsDTOs;
+        }
+        
+        return new List<FlashCardsDTO?>();
     }
 
     public List<StacksDTO?> ListAllDecks()
