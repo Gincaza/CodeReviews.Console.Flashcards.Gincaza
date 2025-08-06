@@ -14,7 +14,7 @@ public class FlashcardsUI
         _businessLogic = businessLogic;
     }
 
-    public async Task RunAsync()
+    public void Run()
     {
         AnsiConsole.Write(
             new FigletText("Flashcards")
@@ -22,26 +22,26 @@ public class FlashcardsUI
                 .Color(Color.Blue));
 
         AnsiConsole.WriteLine();
-        
+
         while (true)
         {
             var choice = ShowMainMenu();
-            
+
             try
             {
                 switch (choice)
                 {
                     case "Create deck":
-                        await CreateDeckAsync();
+                        CreateDeck();
                         break;
                     case "Manage Deck":
-                        await ManageDeckAsync();
+                        ManageDeck();
                         break;
                     case "See Decks":
-                        await ShowDecksAsync();
+                        ShowDecks();
                         break;
                     case "Start Study Lesson":
-                        await StartStudyLessonAsync();
+                        StartStudyLesson();
                         break;
                     case "Exit":
                         AnsiConsole.MarkupLine("[green]Goodbye![/]");
@@ -80,19 +80,19 @@ public class FlashcardsUI
         return choice;
     }
 
-    private async Task CreateDeckAsync()
+    private void CreateDeck()
     {
         Console.Clear();
         AnsiConsole.MarkupLine("[bold blue]Create New Deck[/]");
         AnsiConsole.WriteLine();
 
         var title = AnsiConsole.Ask<string>("Enter deck [green]title[/]:");
-        
+
         AnsiConsole.Status()
             .Start("Creating deck...", ctx =>
             {
                 var result = _businessLogic.CreateDeck(title);
-                
+
                 if (result.Success)
                 {
                     AnsiConsole.MarkupLine($"[green]✓ {result.Message}[/]");
@@ -104,14 +104,14 @@ public class FlashcardsUI
             });
     }
 
-    private async Task ManageDeckAsync()
+    private void ManageDeck()
     {
         Console.Clear();
         AnsiConsole.MarkupLine("[bold blue]Manage Deck[/]");
         AnsiConsole.WriteLine();
 
         var decks = _businessLogic.ListAllDecks();
-        
+
         if (!decks.Any() || decks.All(d => d == null))
         {
             AnsiConsole.MarkupLine("[yellow]No decks available. Please create a deck first.[/]");
@@ -125,10 +125,10 @@ public class FlashcardsUI
                 .AddChoices(deckChoices));
 
         var deckId = int.Parse(selectedDeck.Split(" - ")[0]);
-        await ManageDeckCardsAsync(deckId);
+        ManageDeckCards(deckId);
     }
 
-    private async Task ManageDeckCardsAsync(int deckId)
+    private void ManageDeckCards(int deckId)
     {
         while (true)
         {
@@ -137,19 +137,19 @@ public class FlashcardsUI
             AnsiConsole.WriteLine();
 
             var cards = _businessLogic.ListAllFlashCards(deckId);
-            
+
             // Show current cards
             if (cards.Any() && cards.Any(c => c != null))
             {
                 var table = new Table();
                 table.AddColumn("ID");
                 table.AddColumn("Description");
-                
+
                 foreach (var card in cards.Where(c => c != null))
                 {
                     table.AddRow(card!.Id.ToString(), card.Description);
                 }
-                
+
                 AnsiConsole.Write(table);
                 AnsiConsole.WriteLine();
             }
@@ -173,13 +173,13 @@ public class FlashcardsUI
             switch (action)
             {
                 case "Create Card":
-                    await CreateCardAsync(deckId);
+                    CreateCard(deckId);
                     break;
                 case "Edit Card":
-                    await EditCardAsync(deckId);
+                    EditCard(deckId);
                     break;
                 case "Delete Card":
-                    await DeleteCardAsync(deckId);
+                    DeleteCard(deckId);
                     break;
                 case "Back to Main Menu":
                     return;
@@ -187,13 +187,13 @@ public class FlashcardsUI
         }
     }
 
-    private async Task CreateCardAsync(int deckId)
+    private void CreateCard(int deckId)
     {
         AnsiConsole.WriteLine();
         var description = AnsiConsole.Ask<string>("Enter card [green]description[/]:");
-        
+
         var result = _businessLogic.CreateFlashCard(description, deckId);
-        
+
         if (result.Success)
         {
             AnsiConsole.MarkupLine($"[green]✓ {result.Message}[/]");
@@ -202,16 +202,16 @@ public class FlashcardsUI
         {
             AnsiConsole.MarkupLine($"[red]✗ {result.Message}[/]");
         }
-        
+
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
         Console.ReadKey();
     }
 
-    private async Task EditCardAsync(int deckId)
+    private void EditCard(int deckId)
     {
         var cards = _businessLogic.ListAllFlashCards(deckId);
-        
+
         if (!cards.Any() || cards.All(c => c == null))
         {
             AnsiConsole.MarkupLine("[yellow]No cards to edit.[/]");
@@ -228,12 +228,12 @@ public class FlashcardsUI
                 .AddChoices(cardChoices));
 
         var cardId = int.Parse(selectedCard.Split(" - ")[0]);
-        
+
         AnsiConsole.WriteLine();
         var newDescription = AnsiConsole.Ask<string>("Enter new [green]description[/]:");
-        
+
         var result = _businessLogic.EditFlashCard(cardId, newDescription, null);
-        
+
         if (result.Success)
         {
             AnsiConsole.MarkupLine("[green]✓ Card updated successfully![/]");
@@ -242,16 +242,16 @@ public class FlashcardsUI
         {
             AnsiConsole.MarkupLine("[red]✗ Failed to update card.[/]");
         }
-        
+
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
         Console.ReadKey();
     }
 
-    private async Task DeleteCardAsync(int deckId)
+    private void DeleteCard(int deckId)
     {
         var cards = _businessLogic.ListAllFlashCards(deckId);
-        
+
         if (!cards.Any() || cards.All(c => c == null))
         {
             AnsiConsole.MarkupLine("[yellow]No cards to delete.[/]");
@@ -268,13 +268,13 @@ public class FlashcardsUI
                 .AddChoices(cardChoices));
 
         var cardId = int.Parse(selectedCard.Split(" - ")[0]);
-        
+
         var confirm = AnsiConsole.Confirm("Are you sure you want to delete this card?");
-        
+
         if (confirm)
         {
             var result = _businessLogic.DeleteFlashCard(cardId);
-            
+
             if (result.Success)
             {
                 AnsiConsole.MarkupLine("[green]✓ Card deleted successfully![/]");
@@ -288,20 +288,20 @@ public class FlashcardsUI
         {
             AnsiConsole.MarkupLine("[yellow]Delete cancelled.[/]");
         }
-        
+
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
         Console.ReadKey();
     }
 
-    private async Task ShowDecksAsync()
+    private void ShowDecks()
     {
         Console.Clear();
         AnsiConsole.MarkupLine("[bold blue]All Decks[/]");
         AnsiConsole.WriteLine();
 
         var decks = _businessLogic.ListAllDecks();
-        
+
         if (!decks.Any() || decks.All(d => d == null))
         {
             AnsiConsole.MarkupLine("[yellow]No decks available.[/]");
@@ -312,26 +312,26 @@ public class FlashcardsUI
         table.AddColumn("ID");
         table.AddColumn("Title");
         table.AddColumn("Number of Cards");
-        
+
         foreach (var deck in decks.Where(d => d != null))
         {
             table.AddRow(
-                deck!.Id.ToString(), 
-                deck.Title, 
+                deck!.Id.ToString(),
+                deck.Title,
                 deck.QuantityFlashCards.ToString());
         }
-        
+
         AnsiConsole.Write(table);
     }
 
-    private async Task StartStudyLessonAsync()
+    private void StartStudyLesson()
     {
         Console.Clear();
         AnsiConsole.MarkupLine("[bold blue]Start Study Lesson[/]");
         AnsiConsole.WriteLine();
 
         var decks = _businessLogic.ListAllDecks();
-        
+
         if (!decks.Any() || decks.All(d => d == null))
         {
             AnsiConsole.MarkupLine("[yellow]No decks available for study.[/]");
@@ -345,9 +345,9 @@ public class FlashcardsUI
                 .AddChoices(deckChoices));
 
         var deckId = int.Parse(selectedDeck.Split(" - ")[0]);
-        
+
         var shuffledCards = _businessLogic.GetShuffledCards(deckId);
-        
+
         if (!shuffledCards.Any() || shuffledCards.All(c => c == null))
         {
             AnsiConsole.MarkupLine("[yellow]This deck has no cards to study.[/]");
@@ -358,27 +358,27 @@ public class FlashcardsUI
         AnsiConsole.WriteLine();
 
         var validCards = shuffledCards.Where(c => c != null).ToList();
-        
+
         for (int i = 0; i < validCards.Count; i++)
         {
             var card = validCards[i]!;
-            
+
             Console.Clear();
             AnsiConsole.MarkupLine($"[bold blue]Study Session - Card {i + 1} of {validCards.Count}[/]");
             AnsiConsole.WriteLine();
-            
+
             var panel = new Panel(card.Description)
                 .Header("Flash Card")
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Blue);
-            
+
             AnsiConsole.Write(panel);
             AnsiConsole.WriteLine();
-            
+
             AnsiConsole.MarkupLine("[grey]Press any key to continue to next card...[/]");
             Console.ReadKey();
         }
-        
+
         Console.Clear();
         AnsiConsole.MarkupLine("[bold green]Study session completed! 🎉[/]");
         AnsiConsole.MarkupLine($"You studied [yellow]{validCards.Count}[/] cards.");
