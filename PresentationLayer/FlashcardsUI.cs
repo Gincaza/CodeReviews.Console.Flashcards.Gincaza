@@ -317,8 +317,7 @@ public class FlashcardsUI
         {
             table.AddRow(
                 deck!.Id.ToString(),
-                deck.Title,
-                deck.QuantityFlashCards.ToString());
+                deck.Title);
         }
 
         AnsiConsole.Write(table);

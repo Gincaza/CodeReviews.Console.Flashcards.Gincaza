@@ -7,7 +7,13 @@ namespace DataAccess;
 
 public class DataAccessRepository : IDataAccess
 {
-    public string configString => throw new NotImplementedException();
+    public string configString => "Data Source=localhost;Initial Catalog=FlashcardsDB;Integrated Security=true;TrustServerCertificate=true;";
+
+    public DataAccessRepository()
+    {
+        InitializeDatabase();
+    }
+
     public List<FlashCardsDTO?> GetFlashCards(int stackId)
     {
         throw new NotImplementedException();
@@ -15,7 +21,32 @@ public class DataAccessRepository : IDataAccess
 
     private void InitializeDatabase()
     {
-        //using var connection = new SqliteConn
+        using var connection = new SqlConnection(configString);
+        connection.Open();
+
+        string sql = @"
+            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stacks' AND xtype='U')
+            BEGIN
+                CREATE TABLE Stacks (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    Title NVARCHAR(100) NOT NULL
+                );
+            END;
+
+            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FlashCards' AND xtype='U')
+            BEGIN
+                CREATE TABLE FlashCards (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    Description NVARCHAR(255) NOT NULL,
+                    Stack INT NOT NULL,
+                    CONSTRAINT FK_FlashCards_Stacks FOREIGN KEY (Stack)
+                        REFERENCES Stacks(Id)
+                        ON DELETE CASCADE
+                );
+            END;
+        ";
+
+        connection.Execute(sql);
     }
 
     public List<StacksDTO?> Stacks
