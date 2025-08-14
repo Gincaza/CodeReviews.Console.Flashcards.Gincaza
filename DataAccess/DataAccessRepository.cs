@@ -57,14 +57,29 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool addCodingSession()
-    {
-        throw new NotImplementedException();
-    }
-
     public bool createFlashCard(string description, int stackId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var connection = new SqlConnection(configString);
+
+            var stackExists = connection.QuerySingleOrDefault<int?>(
+                "SELECT COUNT(2) FROM Stacks WHERE Id = @StackId",
+                new { StackId = stackId });
+
+            if (stackExists == 0)
+                return false;
+
+
+            string sql = @"INSERT INTO FlashCards (Description, Stack) VALUES (@Description, @Stack)";
+            var rowsAffected = connection.Execute(sql, new { Description = description, Stack =  stackId });
+
+            return rowsAffected > 0;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public bool createStacks(string title)
