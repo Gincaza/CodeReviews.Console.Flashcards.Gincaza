@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 
 namespace DataAccess;
 
-public class DataAccessRepository : IDataAcess
+public class DataAccessRepository : IDataAccess
 {
     public string configString => throw new NotImplementedException();
     public List<FlashCardsDTO?> GetFlashCards(int stackId)

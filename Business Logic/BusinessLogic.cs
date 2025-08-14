@@ -5,9 +5,9 @@ namespace Business_Logic;
 
 public class BusinessLogic
 {
-    private IDataAcess dataAccess;
+    private IDataAccess dataAccess;
 
-    public BusinessLogic(IDataAcess dataAccess)
+    public BusinessLogic(IDataAccess dataAccess)
     {
         this.dataAccess = dataAccess;
     }

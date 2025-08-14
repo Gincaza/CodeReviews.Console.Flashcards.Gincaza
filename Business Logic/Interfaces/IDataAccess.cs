@@ -1,7 +1,7 @@
 ﻿using Business_Logic.DTO;
 namespace Business_Logic.Interfaces;
 
-public interface IDataAcess
+public interface IDataAccess
 {
     string configString { get; }
     List<StacksDTO?> Stacks { get; }
