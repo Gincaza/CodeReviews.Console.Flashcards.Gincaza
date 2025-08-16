@@ -152,7 +152,16 @@ public class DataAccessRepository : IDataAccess
 
     public bool deleteFlashCard(int cardId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var connection = new SqlConnection(configString);
+            var rowsAffected = connection.Execute("DELETE FROM FlashCards WHERE Id = @Id", new { Id = cardId });
+            return rowsAffected > 0;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }
  
