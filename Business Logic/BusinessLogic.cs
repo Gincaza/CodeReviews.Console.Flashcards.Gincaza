@@ -74,7 +74,7 @@ public class BusinessLogic
 
     public List<StacksDTO?> ListAllDecks()
     {
-        List<StacksDTO?> stacksDTOs = dataAccess.Stacks;
+        List<StacksDTO?> stacksDTOs = dataAccess.GetStacks();
 
         if (stacksDTOs != null && stacksDTOs.Count > 0) 
         { 
