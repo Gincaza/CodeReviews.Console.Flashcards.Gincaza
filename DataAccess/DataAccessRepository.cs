@@ -81,10 +81,35 @@ public class DataAccessRepository : IDataAccess
             return false;
         }
     }
-
+    
     public bool createStacks(string title)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(title)) 
+            return false;
+
+        if (title.Length > 100) 
+            return false;
+
+        try
+        {
+            using var connection = new SqlConnection(configString);
+
+            var existingCount = connection.QuerySingleOrDefault<int>(
+                "SELECT COUNT(1) FROM Stacks WHERE Title = @Title",
+                new { Title = title });
+
+            if (existingCount > 0)
+                return false;
+
+            string sql = @"INSERT INTO Stacks (Title) VALUES (@Title)";
+            var rowsAffected = connection.Execute(sql, new { Title = title });
+
+            return rowsAffected > 0;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public bool updateFlashCard(int cardId, string? description, int? stackId)
