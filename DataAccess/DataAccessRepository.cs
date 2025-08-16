@@ -21,8 +21,22 @@ public class DataAccessRepository : IDataAccess
 
     private void InitializeDatabase()
     {
-        using var connection = new SqlConnection(configString);
-        connection.Open();
+        var masterConnectionString = "Data Source=localhost;Initial Catalog=master;Integrated Security=true;TrustServerCertificate=true;";
+
+        using (var connection = new SqlConnection(masterConnectionString))
+        {
+
+            string createDbSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'FlashcardsDB')
+            BEGIN
+                CREATE DATABASE FlashcardsDB;
+            END";
+
+            connection.Execute(createDbSql);
+
+        }
+
+        using var dbConnection = new SqlConnection(masterConnectionString);
 
         string sql = @"
             IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stacks' AND xtype='U')
@@ -46,7 +60,7 @@ public class DataAccessRepository : IDataAccess
             END;
         ";
 
-        connection.Execute(sql);
+        dbConnection.Execute(sql);
     }
 
     public List<StacksDTO?> GetStacks()
