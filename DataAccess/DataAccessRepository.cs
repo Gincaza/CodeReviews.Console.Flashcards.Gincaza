@@ -25,40 +25,38 @@ public class DataAccessRepository : IDataAccess
 
         using (var connection = new SqlConnection(masterConnectionString))
         {
-
             string createDbSql = @"
-            IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'FlashcardsDB')
-            BEGIN
-                CREATE DATABASE FlashcardsDB;
-            END";
+        IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'FlashcardsDB')
+        BEGIN
+            CREATE DATABASE FlashcardsDB;
+        END";
 
             connection.Execute(createDbSql);
-
         }
 
-        using var dbConnection = new SqlConnection(masterConnectionString);
+        using var dbConnection = new SqlConnection(configString);
 
         string sql = @"
-            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stacks' AND xtype='U')
-            BEGIN
-                CREATE TABLE Stacks (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    Title NVARCHAR(100) NOT NULL
-                );
-            END;
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stacks' AND xtype='U')
+        BEGIN
+            CREATE TABLE Stacks (
+                Id INT IDENTITY(1,1) PRIMARY KEY,
+                Title NVARCHAR(100) NOT NULL
+            );
+        END;
 
-            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FlashCards' AND xtype='U')
-            BEGIN
-                CREATE TABLE FlashCards (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    Description NVARCHAR(255) NOT NULL,
-                    Stack INT NOT NULL,
-                    CONSTRAINT FK_FlashCards_Stacks FOREIGN KEY (Stack)
-                        REFERENCES Stacks(Id)
-                        ON DELETE CASCADE
-                );
-            END;
-        ";
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='FlashCards' AND xtype='U')
+        BEGIN
+            CREATE TABLE FlashCards (
+                Id INT IDENTITY(1,1) PRIMARY KEY,
+                Description NVARCHAR(255) NOT NULL,
+                Stack INT NOT NULL,
+                CONSTRAINT FK_FlashCards_Stacks FOREIGN KEY (Stack)
+                    REFERENCES Stacks(Id)
+                    ON DELETE CASCADE
+            );
+        END;
+    ";
 
         dbConnection.Execute(sql);
     }
