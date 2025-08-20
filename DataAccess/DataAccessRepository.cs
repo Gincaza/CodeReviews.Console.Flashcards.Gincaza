@@ -16,7 +16,20 @@ public class DataAccessRepository : IDataAccess
 
     public List<FlashCardsDTO?> GetFlashCards(int stackId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using var connection = new SqlConnection(configString);
+
+            var flashCards = connection.Query<FlashCardsDTO>(
+                "SELECT Id, Description, Stack FROM FlashCards WHERE Stack = @StackId",
+                new { StackId = stackId }).ToList();
+
+            return flashCards.Cast<FlashCardsDTO?>().ToList();
+        }
+        catch (Exception)
+        {
+            return new List<FlashCardsDTO?>();
+        }
     }
 
     private void InitializeDatabase()

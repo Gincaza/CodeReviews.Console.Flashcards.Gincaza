@@ -311,7 +311,6 @@ public class FlashcardsUI
         var table = new Table();
         table.AddColumn("ID");
         table.AddColumn("Title");
-        table.AddColumn("Number of Cards");
 
         foreach (var deck in decks.Where(d => d != null))
         {
