@@ -24,9 +24,9 @@ public class BusinessLogic
         return new OperationResult(success: false, message: "There was an error");
     }
 
-    public OperationResult CreateFlashCard(string description, int stackId)
+    public OperationResult CreateFlashCard(string description, string translation, int stackId)
     {
-        bool result = dataAccess.createFlashCard(description, stackId);
+        bool result = dataAccess.createFlashCard(description, translation, stackId);
 
         if (result)
         {
@@ -36,9 +36,9 @@ public class BusinessLogic
         return new OperationResult(success: false, message: "There was an error.");
     }
 
-    public OperationResult EditFlashCard(int cardId, string? description, int? stackId)
+    public OperationResult EditFlashCard(int cardId, string? description, string? translation)
     {
-        bool result = dataAccess.updateFlashCard(cardId, description, stackId);
+        bool result = dataAccess.updateFlashCard(cardId, description, translation);
         
         if (result)
         {

@@ -21,7 +21,7 @@ public class DataAccessRepository : IDataAccess
             using var connection = new SqlConnection(configString);
 
             var flashCards = connection.Query<FlashCardsDTO>(
-                "SELECT Id, Description, Stack FROM FlashCards WHERE Stack = @StackId",
+                "SELECT Id, Word, Stack, Translation FROM FlashCards WHERE Stack = @StackId",
                 new { StackId = stackId }).ToList();
 
             return flashCards.Cast<FlashCardsDTO?>().ToList();
@@ -62,8 +62,9 @@ public class DataAccessRepository : IDataAccess
         BEGIN
             CREATE TABLE FlashCards (
                 Id INT IDENTITY(1,1) PRIMARY KEY,
-                Description NVARCHAR(255) NOT NULL,
+                Word NVARCHAR(255) NOT NULL,
                 Stack INT NOT NULL,
+                Translation NVARCHAR(255) NOT NULL,
                 CONSTRAINT FK_FlashCards_Stacks FOREIGN KEY (Stack)
                     REFERENCES Stacks(Id)
                     ON DELETE CASCADE
@@ -89,7 +90,7 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool createFlashCard(string description, int stackId)
+    public bool createFlashCard(string description, string translation, int stackId)
     {
         try
         {
@@ -103,8 +104,8 @@ public class DataAccessRepository : IDataAccess
                 return false;
 
 
-            string sql = @"INSERT INTO FlashCards (Description, Stack) VALUES (@Description, @Stack)";
-            var rowsAffected = connection.Execute(sql, new { Description = description, Stack =  stackId });
+            string sql = @"INSERT INTO FlashCards (Description, Translation, Stack) VALUES (@Description, @Translation, @Stack)";
+            var rowsAffected = connection.Execute(sql, new { Description = description, Translation = translation, Stack =  stackId });
 
             return rowsAffected > 0;
         }
@@ -144,27 +145,28 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool updateFlashCard(int cardId, string? description, int? stackId)
+    public bool updateFlashCard(int cardId, string? description, string? translation)
     {
         using var connection = new SqlConnection(this.configString);
 
         string query;
         object parameters;
 
-        if (stackId.HasValue && !string.IsNullOrEmpty(description))
+        if (!string.IsNullOrEmpty(description) && !string.IsNullOrEmpty(translation))
         {
-            query = "UPDATE FlashCards SET Description = @Description, Stack = @Stack WHERE Id = @Id";
-            parameters = new { Description = description, Stack = stackId.Value, Id = cardId };
+            query = "UPDATE FlashCards SET Description = @Description, Translation = @Translation WHERE Id = @Id";
+            parameters = new { Description = description, Translation = translation, Id = cardId };
         }
         else if (!string.IsNullOrEmpty(description))
         {
             query = "UPDATE FlashCards SET Description = @Description WHERE Id = @Id";
             parameters = new { Description = description, Id = cardId };
         }
-        else if (stackId.HasValue)
+
+        else if (!string.IsNullOrEmpty(translation))
         {
-            query = "UPDATE FlashCards SET Stack = @Stack WHERE Id = @Id";
-            parameters = new { Stack = stackId.Value, Id = cardId };
+            query = "UPDATE FlashCards SET Translation = @Translation WHERE Id = @Id";
+            parameters = new { Translation = translation, Id = cardId };
         }
         else
         {

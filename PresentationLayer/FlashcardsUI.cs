@@ -143,11 +143,12 @@ public class FlashcardsUI
             {
                 var table = new Table();
                 table.AddColumn("ID");
-                table.AddColumn("Description");
+                table.AddColumn("Word");
+                table.AddColumn("Translation");
 
                 foreach (var card in cards.Where(c => c != null))
                 {
-                    table.AddRow(card!.Id.ToString(), card.Description);
+                    table.AddRow(card!.Id.ToString(), card.Word, card.Translation);
                 }
 
                 AnsiConsole.Write(table);
@@ -190,9 +191,11 @@ public class FlashcardsUI
     private void CreateCard(int deckId)
     {
         AnsiConsole.WriteLine();
-        var description = AnsiConsole.Ask<string>("Enter card [green]description[/]:");
+        var word = AnsiConsole.Ask<string>("Enter card [green]word[/]:");
 
-        var result = _businessLogic.CreateFlashCard(description, deckId);
+        var translation = AnsiConsole.Ask<string>("Enter card [green]translation[/]:");
+
+        var result = _businessLogic.CreateFlashCard(word, translation, deckId);
 
         if (result.Success)
         {
@@ -221,7 +224,7 @@ public class FlashcardsUI
             return;
         }
 
-        var cardChoices = cards.Where(c => c != null).Select(c => $"{c!.Id} - {c.Description}").ToList();
+        var cardChoices = cards.Where(c => c != null).Select(c => $"{c!.Id} - {c.Word} - {c.Translation}").ToList();
         var selectedCard = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select a card to edit:")
@@ -232,7 +235,9 @@ public class FlashcardsUI
         AnsiConsole.WriteLine();
         var newDescription = AnsiConsole.Ask<string>("Enter new [green]description[/]:");
 
-        var result = _businessLogic.EditFlashCard(cardId, newDescription, null);
+        var newTranslation = AnsiConsole.Ask<string>("Enter new [green]translation[/]:");
+
+        var result = _businessLogic.EditFlashCard(cardId, newDescription, newTranslation);
 
         if (result.Success)
         {
@@ -261,7 +266,7 @@ public class FlashcardsUI
             return;
         }
 
-        var cardChoices = cards.Where(c => c != null).Select(c => $"{c!.Id} - {c.Description}").ToList();
+        var cardChoices = cards.Where(c => c != null).Select(c => $"{c!.Id} - {c.Word} - {c.Translation}").ToList();
         var selectedCard = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select a card to delete:")
@@ -365,7 +370,7 @@ public class FlashcardsUI
             AnsiConsole.MarkupLine($"[bold blue]Study Session - Card {i + 1} of {validCards.Count}[/]");
             AnsiConsole.WriteLine();
 
-            var panel = new Panel(card.Description)
+            var panel = new Panel(card.Word)
                 .Header("Flash Card")
                 .Border(BoxBorder.Rounded)
                 .BorderColor(Color.Blue);
