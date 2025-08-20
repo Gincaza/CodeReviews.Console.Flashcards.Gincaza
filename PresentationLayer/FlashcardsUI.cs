@@ -233,11 +233,11 @@ public class FlashcardsUI
         var cardId = int.Parse(selectedCard.Split(" - ")[0]);
 
         AnsiConsole.WriteLine();
-        var newDescription = AnsiConsole.Ask<string>("Enter new [green]description[/]:");
+        var newWord = AnsiConsole.Ask<string>("Enter new [green]word[/]:");
 
         var newTranslation = AnsiConsole.Ask<string>("Enter new [green]translation[/]:");
 
-        var result = _businessLogic.EditFlashCard(cardId, newDescription, newTranslation);
+        var result = _businessLogic.EditFlashCard(cardId, newWord, newTranslation);
 
         if (result.Success)
         {

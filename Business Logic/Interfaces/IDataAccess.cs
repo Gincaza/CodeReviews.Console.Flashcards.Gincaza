@@ -7,8 +7,8 @@ public interface IDataAccess
 
     List<StacksDTO?> GetStacks();
     List<FlashCardsDTO?> GetFlashCards(int stackId);
-    bool createFlashCard(string description,string translation, int stackId);
+    bool createFlashCard(string word,string translation, int stackId);
     bool createStacks(string title);
-    bool updateFlashCard(int cardId, string? description, string? translation);
+    bool updateFlashCard(int cardId, string? word, string? translation);
     bool deleteFlashCard(int cardId);
 }

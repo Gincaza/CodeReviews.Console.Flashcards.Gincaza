@@ -90,7 +90,7 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool createFlashCard(string description, string translation, int stackId)
+    public bool createFlashCard(string word, string translation, int stackId)
     {
         try
         {
@@ -104,8 +104,8 @@ public class DataAccessRepository : IDataAccess
                 return false;
 
 
-            string sql = @"INSERT INTO FlashCards (Description, Translation, Stack) VALUES (@Description, @Translation, @Stack)";
-            var rowsAffected = connection.Execute(sql, new { Description = description, Translation = translation, Stack =  stackId });
+            string sql = @"INSERT INTO FlashCards (Word, Translation, Stack) VALUES (@Word, @Translation, @Stack)";
+            var rowsAffected = connection.Execute(sql, new { Word = word, Translation = translation, Stack =  stackId });
 
             return rowsAffected > 0;
         }
@@ -145,22 +145,22 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool updateFlashCard(int cardId, string? description, string? translation)
+    public bool updateFlashCard(int cardId, string? word, string? translation)
     {
         using var connection = new SqlConnection(this.configString);
 
         string query;
         object parameters;
 
-        if (!string.IsNullOrEmpty(description) && !string.IsNullOrEmpty(translation))
+        if (!string.IsNullOrEmpty(word) && !string.IsNullOrEmpty(translation))
         {
-            query = "UPDATE FlashCards SET Description = @Description, Translation = @Translation WHERE Id = @Id";
-            parameters = new { Description = description, Translation = translation, Id = cardId };
+            query = "UPDATE FlashCards SET Word = @Word, Translation = @Translation WHERE Id = @Id";
+            parameters = new { Word = word, Translation = translation, Id = cardId };
         }
-        else if (!string.IsNullOrEmpty(description))
+        else if (!string.IsNullOrEmpty(word))
         {
-            query = "UPDATE FlashCards SET Description = @Description WHERE Id = @Id";
-            parameters = new { Description = description, Id = cardId };
+            query = "UPDATE FlashCards SET Word = @Word WHERE Id = @Id";
+            parameters = new { Word = word, Id = cardId };
         }
 
         else if (!string.IsNullOrEmpty(translation))
