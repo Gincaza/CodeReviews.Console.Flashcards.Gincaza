@@ -36,6 +36,7 @@ public static class UIHelper
         Console.Clear();
     }
 
+    public static void ShowSectionHeader(string title)
     {
         Console.Clear();
         AnsiConsole.MarkupLine($"[bold blue]{title}[/]");
