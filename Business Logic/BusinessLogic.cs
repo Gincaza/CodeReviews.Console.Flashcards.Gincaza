@@ -96,6 +96,19 @@ public class BusinessLogic
         return cardsList;
     }
 
+    public OperationResult DeleteStack(int stackId)
+    {
+        bool result = dataAccess.deleteStack(stackId);
+
+        if (result)
+        {
+            return new OperationResult(true, null);
+        }
+        else
+        {
+            return new OperationResult(false, null);
+        }
+    }
     private void Shuffle(List<FlashCardsDTO?> cards)
     {
         int n = cards.Count;

@@ -11,4 +11,5 @@ public interface IDataAccess
     bool createStacks(string title);
     bool updateFlashCard(int cardId, string? word, string? translation);
     bool deleteFlashCard(int cardId);
+    bool deleteStack(int stackId);
 }

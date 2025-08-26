@@ -190,5 +190,16 @@ public class DataAccessRepository : IDataAccess
             return false;
         }
     }
+
+    public bool deleteStack(int stackId)
+    {
+        try
+        {
+            using var connection = new SqlConnection(configString);
+            var rowsAffected = connection.Execute("DELETE FROM Stacks WHERE Id = @Id", new { id = stackId });
+            return rowsAffected > 0;
+        }
+        catch { return false; }
+    }
 }
  
