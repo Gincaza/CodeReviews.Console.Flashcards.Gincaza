@@ -142,13 +142,12 @@ public class FlashcardsUI
             if (cards.Any() && cards.Any(c => c != null))
             {
                 var table = new Table();
-                table.AddColumn("ID");
                 table.AddColumn("Word");
                 table.AddColumn("Translation");
 
                 foreach (var card in cards.Where(c => c != null))
                 {
-                    table.AddRow(card!.Id.ToString(), card.Word, card.Translation);
+                    table.AddRow(card!.Word, card.Translation);
                 }
 
                 AnsiConsole.Write(table);
