@@ -167,6 +167,7 @@ public class FlashcardsUI
                         "Create Card",
                         "Edit Card",
                         "Delete Card",
+                        "Delete Deck",
                         "Back to Main Menu"
                     }));
 
@@ -180,6 +181,10 @@ public class FlashcardsUI
                     break;
                 case "Delete Card":
                     DeleteCard(deckId);
+                    break;
+                case "Delete Deck":
+                    if (DeleteDeck(deckId))
+                        return; // Exit to main menu if deck was deleted
                     break;
                 case "Back to Main Menu":
                     return;
@@ -296,6 +301,55 @@ public class FlashcardsUI
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
         Console.ReadKey();
+    }
+
+    private bool DeleteDeck(int deckId)
+    {
+        var decks = _businessLogic.ListAllDecks();
+        var deck = decks.FirstOrDefault(d => d != null && d.Id == deckId);
+        
+        if (deck == null)
+        {
+            AnsiConsole.MarkupLine("[red]✗ Deck not found.[/]");
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
+            Console.ReadKey();
+            return false;
+        }
+
+        AnsiConsole.WriteLine();
+        AnsiConsole.MarkupLine($"[bold red]⚠️  Warning: You are about to delete the deck '[yellow]{deck.Title}[/]'[/]");
+        AnsiConsole.MarkupLine("[red]This will also delete all cards in this deck and cannot be undone![/]");
+        AnsiConsole.WriteLine();
+
+        var confirm = AnsiConsole.Confirm("Are you sure you want to delete this deck?");
+
+        if (confirm)
+        {
+            var result = _businessLogic.DeleteStack(deckId);
+
+            if (result.Success)
+            {
+                AnsiConsole.MarkupLine("[green]✓ Deck deleted successfully![/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
+                Console.ReadKey();
+                return true; // Deck was deleted, exit to main menu
+            }
+            else
+            {
+                AnsiConsole.MarkupLine("[red]✗ Failed to delete deck.[/]");
+            }
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[yellow]Delete cancelled.[/]");
+        }
+
+        AnsiConsole.WriteLine();
+        AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
+        Console.ReadKey();
+        return false; // Deck was not deleted, stay in manage menu
     }
 
     private void ShowDecks()
