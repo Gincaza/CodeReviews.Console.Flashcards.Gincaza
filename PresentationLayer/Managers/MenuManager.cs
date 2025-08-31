@@ -18,6 +18,7 @@ public class MenuManager
                     "Manage Deck", 
                     "See Decks",
                     "Start Study Lesson",
+                    "View Study History",
                     "Exit"
                 }));
 

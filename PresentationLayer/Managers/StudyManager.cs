@@ -33,6 +33,7 @@ public class StudyManager
         var cardsToStudy = new List<FlashCardsDTO?>(validCards);
         var totalCards = validCards.Count;
         var correctAnswers = 0;
+        var startTime = DateTime.Now;
 
         ShowStudyInstructions();
 
@@ -64,7 +65,13 @@ public class StudyManager
             }
         }
 
-        ShowStudyComplete(totalCards, correctAnswers);
+        var endTime = DateTime.Now;
+        var duration = endTime - startTime;
+
+        // Salvar a sessão de estudo
+        var saveResult = _businessLogic.SaveStudySession(deckId.Value, totalCards, correctAnswers, duration);
+
+        ShowStudyComplete(totalCards, correctAnswers, duration, saveResult.Success);
     }
 
     private int? SelectDeckForStudy()
@@ -154,7 +161,7 @@ public class StudyManager
         UIHelper.WaitForKeyPress();
     }
 
-    private void ShowStudyComplete(int totalCards, int correctAnswers)
+    private void ShowStudyComplete(int totalCards, int correctAnswers, TimeSpan duration, bool sessionSaved)
     {
         UIHelper.ClearScreen();
         AnsiConsole.MarkupLine("[bold green]Study session completed![/]");
@@ -162,6 +169,39 @@ public class StudyManager
         
         AnsiConsole.MarkupLine($"[green]Total cards mastered:[/] [yellow]{totalCards}[/]");
         AnsiConsole.MarkupLine($"[green]Total attempts made:[/] [yellow]{correctAnswers}[/]");
+        
+        if (correctAnswers > totalCards)
+        {
+            AnsiConsole.MarkupLine($"[blue]You needed[/] [yellow]{correctAnswers - totalCards}[/] [blue]extra attempts to master all cards.[/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[green]Perfect! You got all cards right on the first try![/]");
+        }
+
+        var durationText = FormatDuration(duration);
+        AnsiConsole.MarkupLine($"[green]Study duration:[/] [yellow]{durationText}[/]");
+
+        if (sessionSaved)
+        {
+            UIHelper.ShowSuccess("Session saved to history!");
+        }
+        else
+        {
+            UIHelper.ShowWarning("Session completed but could not be saved to history.");
+        }
+    }
+
+    private string FormatDuration(TimeSpan duration)
+    {
+        if (duration.TotalHours >= 1)
+        {
+            return $"{(int)duration.TotalHours:D2}:{duration.Minutes:D2}:{duration.Seconds:D2}";
+        }
+        else
+        {
+            return $"{duration.Minutes:D2}:{duration.Seconds:D2}";
+        }
     }
 
     private class StudyCardResult

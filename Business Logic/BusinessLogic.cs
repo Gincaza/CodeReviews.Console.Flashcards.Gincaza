@@ -109,6 +109,33 @@ public class BusinessLogic
             return new OperationResult(false, null);
         }
     }
+
+    public OperationResult SaveStudySession(int stackId, int totalCards, int totalAttempts, TimeSpan duration)
+    {
+        bool result = dataAccess.InsertStudySession(stackId, totalCards, totalAttempts, duration);
+
+        if (result)
+        {
+            return new OperationResult(true, "Study session saved successfully!");
+        }
+        else
+        {
+            return new OperationResult(false, "Failed to save study session.");
+        }
+    }
+
+    public List<StudySessionDto?> GetStudySessions(int? stackId = null)
+    {
+        List<StudySessionDto?> studySessionDTOs = dataAccess.GetStudySession(stackId);
+
+        if (studySessionDTOs != null && studySessionDTOs.Count > 0)
+        {
+            return studySessionDTOs;
+        }
+
+        return new List<StudySessionDto?>();
+    }
+
     private void Shuffle(List<FlashCardsDTO?> cards)
     {
         int n = cards.Count;

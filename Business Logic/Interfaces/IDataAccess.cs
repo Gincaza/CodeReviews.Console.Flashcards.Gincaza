@@ -12,4 +12,6 @@ public interface IDataAccess
     bool updateFlashCard(int cardId, string? word, string? translation);
     bool deleteFlashCard(int cardId);
     bool deleteStack(int stackId);
+    bool InsertStudySession(int stackId, int totalCards, int totalAttempts, TimeSpan duration);
+    List<StudySessionDto?> GetStudySession(int? stackId = null);
 }
