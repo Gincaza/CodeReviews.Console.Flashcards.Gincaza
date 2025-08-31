@@ -1,5 +1,5 @@
 ﻿using Business_Logic;
-using Business_Logic.DTO;
+using Business_Logic.Dto;
 using PresentationLayer.Helpers;
 using Spectre.Console;
 
@@ -32,7 +32,7 @@ public class StudyManager
         var validCards = shuffledCards.Where(c => c != null).ToList();
         var cardsToStudy = new List<FlashCardsDTO?>(validCards);
         var totalCards = validCards.Count;
-        var correctAnswers = 0;
+        var totalAttempts = 0;
         var startTime = DateTime.Now;
 
         ShowStudyInstructions();
@@ -50,9 +50,11 @@ public class StudyManager
                 return;
             }
 
+            totalAttempts++;
+
             if (studyResult.IsCorrect)
             {
-                correctAnswers++;
+
             }
             else
             {
@@ -68,10 +70,9 @@ public class StudyManager
         var endTime = DateTime.Now;
         var duration = endTime - startTime;
 
-        // Salvar a sessão de estudo
-        var saveResult = _businessLogic.SaveStudySession(deckId.Value, totalCards, correctAnswers, duration);
+        var saveResult = _businessLogic.SaveStudySession(deckId.Value, totalCards, totalAttempts, duration);
 
-        ShowStudyComplete(totalCards, correctAnswers, duration, saveResult.Success);
+        ShowStudyComplete(totalCards, totalAttempts, duration, saveResult.Success);
     }
 
     private int? SelectDeckForStudy()
@@ -161,18 +162,18 @@ public class StudyManager
         UIHelper.WaitForKeyPress();
     }
 
-    private void ShowStudyComplete(int totalCards, int correctAnswers, TimeSpan duration, bool sessionSaved)
+    private void ShowStudyComplete(int totalCards, int totalAttempts, TimeSpan duration, bool sessionSaved)
     {
         UIHelper.ClearScreen();
         AnsiConsole.MarkupLine("[bold green]Study session completed![/]");
         AnsiConsole.WriteLine();
         
         AnsiConsole.MarkupLine($"[green]Total cards mastered:[/] [yellow]{totalCards}[/]");
-        AnsiConsole.MarkupLine($"[green]Total attempts made:[/] [yellow]{correctAnswers}[/]");
+        AnsiConsole.MarkupLine($"[green]Total attempts made:[/] [yellow]{totalAttempts}[/]");
         
-        if (correctAnswers > totalCards)
+        if (totalAttempts > totalCards)
         {
-            AnsiConsole.MarkupLine($"[blue]You needed[/] [yellow]{correctAnswers - totalCards}[/] [blue]extra attempts to master all cards.[/]");
+            AnsiConsole.MarkupLine($"[blue]You needed[/] [yellow]{totalAttempts - totalCards}[/] [blue]extra attempts to master all cards.[/]");
         }
         else
         {
