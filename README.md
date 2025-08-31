@@ -1,3 +1,6 @@
+
+# Flashcards Console Application
+
 ## Features
 
 - **Deck Management**: Create, view, and delete flashcard decks
@@ -20,22 +23,26 @@
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repository-url>
    cd CodeReviews.Console.Flashcards.Gincaza
    ```
 
 2. **Restore dependencies**
+
    ```bash
    dotnet restore
    ```
 
 3. **Build the solution**
+
    ```bash
    dotnet build
    ```
 
 4. **Run the application**
+
    ```bash
    cd FlashcardsApp
    dotnet run
@@ -62,7 +69,7 @@ CodeReviews.Console.Flashcards.Gincaza/
       FlashcardsUI.cs        # Main UI coordinator
 ```
 
-## ?? How to Use
+## How to Use
 
 ### 1. Creating Your First Deck
 
@@ -70,18 +77,24 @@ CodeReviews.Console.Flashcards.Gincaza/
 
 - Enter a unique deck name
 
+
 - Your deck is ready for flashcards!
 
+
 ### 2. Adding Flashcards
+
 - Choose "Manage Deck" ? Select your deck
 
 - Select "Create Card"
 
 - Enter the word and its translation
 
+
 - Repeat to build your deck
 
+
 ### 3. Studying
+
 - Select "Start Study Lesson"
 
 - Choose a deck to study
@@ -90,14 +103,19 @@ CodeReviews.Console.Flashcards.Gincaza/
 
 - Cards you get wrong will repeat until mastered
 
+
 - View your performance summary at the end
 
+
 ### 4. Tracking Progress
+
 - Select "View Study History"
 
 - See all your study sessions or filter by deck
 
+
 - Monitor your learning progress over time
+
 
 ## Technologies Used
 
@@ -109,7 +127,9 @@ CodeReviews.Console.Flashcards.Gincaza/
 
 - **UI**: Spectre.Console for rich terminal interface
 
+
 - **Architecture**: Clean Architecture with separation of concerns
+
 
 ## Database Schema
 
@@ -119,7 +139,9 @@ The application uses three main tables:
 
 - **FlashCards**: Stores individual flashcards with word/translation pairs
 
+
 - **StudySessions**: Tracks study session history and performance
+
 
 ## Configuration
 
@@ -159,12 +181,13 @@ To modify the connection string, edit the `configString` property in `DataAccess
 
 - Study session history with detailed metrics
 
+
 - Robust error handling and validation
+
 
 ## License
 
-This project is part of the C# Academy coding challenges. 
-
+This project is part of the C# Academy coding challenges.
 Feel free to use it for learning purposes.
 
 ## Acknowledgments
@@ -173,8 +196,11 @@ Feel free to use it for learning purposes.
 
 - [Spectre.Console](https://spectreconsole.net/) for the beautiful terminal UI
 
+
 - [Dapper](https://github.com/DapperLib/Dapper) for the lightweight ORM
 
+
 ---
+
 
 *Happy studying!*
