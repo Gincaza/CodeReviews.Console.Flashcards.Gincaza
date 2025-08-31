@@ -121,7 +121,6 @@ To modify the connection string, edit the `configString` property in `DataAccess
 - Progress tracking with attempt counting
 
 ### Interactive Console UI
-- Colorful and intuitive menu system
 - Real-time progress indicators during study
 - Clear feedback for correct/incorrect answers
 - Formatted duration and statistics display
