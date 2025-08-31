@@ -1,5 +1,5 @@
 ﻿using Business_Logic;
-using Business_Logic.DTO;
+using Business_Logic.Dto;
 using PresentationLayer.Helpers;
 using Spectre.Console;
 
@@ -30,7 +30,7 @@ public class StudyManager
         }
 
         var validCards = shuffledCards.Where(c => c != null).ToList();
-        var cardsToStudy = new List<FlashCardsDTO?>(validCards);
+        var cardsToStudy = new List<FlashCardsDto?>(validCards);
         var totalCards = validCards.Count;
         var correctAnswers = 0;
 
@@ -96,7 +96,7 @@ public class StudyManager
         Console.ReadKey();
     }
 
-    private StudyCardResult ProcessCard(FlashCardsDTO currentCard, int remainingCards, int totalCards)
+    private StudyCardResult ProcessCard(FlashCardsDto currentCard, int remainingCards, int totalCards)
     {
         UIHelper.ClearScreen();
         

@@ -1,5 +1,5 @@
 ﻿using Business_Logic.Interfaces;
-using Business_Logic.DTO;
+using Business_Logic.Dto;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -14,21 +14,21 @@ public class DataAccessRepository : IDataAccess
         InitializeDatabase();
     }
 
-    public List<FlashCardsDTO?> GetFlashCards(int stackId)
+    public List<FlashCardsDto?> GetFlashCards(int stackId)
     {
         try
         {
             using var connection = new SqlConnection(configString);
 
-            var flashCards = connection.Query<FlashCardsDTO>(
+            var flashCards = connection.Query<FlashCardsDto>(
                 "SELECT Id, Word, Stack, Translation FROM FlashCards WHERE Stack = @StackId",
                 new { StackId = stackId }).ToList();
 
-            return flashCards.Cast<FlashCardsDTO?>().ToList();
+            return flashCards.Cast<FlashCardsDto?>().ToList();
         }
         catch (Exception)
         {
-            return new List<FlashCardsDTO?>();
+            return new List<FlashCardsDto?>();
         }
     }
 

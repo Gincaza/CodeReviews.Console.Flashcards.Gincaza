@@ -1,4 +1,4 @@
-﻿using Business_Logic.DTO;
+﻿using Business_Logic.Dto;
 using Business_Logic.Interfaces;
 using Business_Logic.Messages;
 namespace Business_Logic;
@@ -63,16 +63,16 @@ public class BusinessLogic
         return new OperationResult(false, null);
     }
 
-    public List<FlashCardsDTO?> ListAllFlashCards(int stackId)
+    public List<FlashCardsDto?> ListAllFlashCards(int stackId)
     {
-        List<FlashCardsDTO?> flashCardsDTOs = dataAccess.GetFlashCards(stackId);
+        List<FlashCardsDto?> flashCardsDTOs = dataAccess.GetFlashCards(stackId);
 
         if (flashCardsDTOs != null && flashCardsDTOs.Count > 0)
         {
             return flashCardsDTOs;
         }
         
-        return new List<FlashCardsDTO?>();
+        return new List<FlashCardsDto?>();
     }
 
     public List<StacksDTO?> ListAllDecks()
@@ -87,9 +87,9 @@ public class BusinessLogic
         return new List<StacksDTO?>();
     }
 
-    public List<FlashCardsDTO?> GetShuffledCards(int stackId)
+    public List<FlashCardsDto?> GetShuffledCards(int stackId)
     {
-        List<FlashCardsDTO?> cardsList = dataAccess.GetFlashCards(stackId);
+        List<FlashCardsDto?> cardsList = dataAccess.GetFlashCards(stackId);
 
         Shuffle(cardsList);
 
@@ -109,7 +109,7 @@ public class BusinessLogic
             return new OperationResult(false, null);
         }
     }
-    private void Shuffle(List<FlashCardsDTO?> cards)
+    private void Shuffle(List<FlashCardsDto?> cards)
     {
         int n = cards.Count;
         Random rng = new();
