@@ -1,4 +1,3 @@
-
 # Flashcards Console Application
 
 ## Features
@@ -75,9 +74,8 @@ CodeReviews.Console.Flashcards.Gincaza/
 
 - Select "Create deck" from the main menu
 
+
 - Enter a unique deck name
-
-
 - Your deck is ready for flashcards!
 
 
@@ -87,9 +85,8 @@ CodeReviews.Console.Flashcards.Gincaza/
 
 - Select "Create Card"
 
+
 - Enter the word and its translation
-
-
 - Repeat to build your deck
 
 
