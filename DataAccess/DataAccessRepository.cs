@@ -7,7 +7,7 @@ namespace DataAccess;
 
 public class DataAccessRepository : IDataAccess
 {
-    public string configString => "Data Source=localhost;Initial Catalog=FlashcardsDB;Integrated Security=true;TrustServerCertificate=true;";
+    public string ConfigString => "Data Source=localhost;Initial Catalog=FlashcardsDB;Integrated Security=true;TrustServerCertificate=true;";
 
     public DataAccessRepository()
     {
@@ -18,7 +18,7 @@ public class DataAccessRepository : IDataAccess
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             var flashCards = connection.Query<FlashCardsDto>(
                 "SELECT Id, Word, Stack, Translation FROM FlashCards WHERE Stack = @StackId",
@@ -47,7 +47,7 @@ public class DataAccessRepository : IDataAccess
             connection.Execute(createDbSql);
         }
 
-        using var dbConnection = new SqlConnection(configString);
+        using var dbConnection = new SqlConnection(ConfigString);
 
         string sql = @"
         IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Stacks' AND xtype='U')
@@ -98,7 +98,7 @@ public class DataAccessRepository : IDataAccess
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             return connection.Query<StacksDto>(
                 "SELECT Id, Title FROM Stacks ORDER BY Title").Cast<StacksDto?>().ToList();
@@ -113,7 +113,7 @@ public class DataAccessRepository : IDataAccess
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             var stackExists = connection.QuerySingleOrDefault<int?>(
                 "SELECT COUNT(2) FROM Stacks WHERE Id = @StackId",
@@ -144,7 +144,7 @@ public class DataAccessRepository : IDataAccess
 
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             var existingCount = connection.QuerySingleOrDefault<int>(
                 "SELECT COUNT(1) FROM Stacks WHERE Title = @Title",
@@ -164,9 +164,9 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool updateFlashCard(int cardId, string? word, string? translation)
+    public bool UpdateFlashCard(int cardId, string? word, string? translation)
     {
-        using var connection = new SqlConnection(this.configString);
+        using var connection = new SqlConnection(this.ConfigString);
 
         string query;
         object parameters;
@@ -196,11 +196,11 @@ public class DataAccessRepository : IDataAccess
         return rowsAffected > 0;
     }
 
-    public bool deleteFlashCard(int cardId)
+    public bool DeleteFlashCard(int cardId)
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
             var rowsAffected = connection.Execute("DELETE FROM FlashCards WHERE Id = @Id", new { Id = cardId });
             return rowsAffected > 0;
         }
@@ -210,11 +210,11 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool deleteStack(int stackId)
+    public bool DeleteStack(int stackId)
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
             var rowsAffected = connection.Execute("DELETE FROM Stacks WHERE Id = @Id", new { id = stackId });
             return rowsAffected > 0;
         }
@@ -224,7 +224,7 @@ public class DataAccessRepository : IDataAccess
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             string sql = @"
             INSERT INTO StudySessions (StackId, SessionDate, TotalCards, TotalAttempts, CorrectAnswers, StudyDuration) 
@@ -251,7 +251,7 @@ public class DataAccessRepository : IDataAccess
     {
         try
         {
-            using var connection = new SqlConnection(configString);
+            using var connection = new SqlConnection(ConfigString);
 
             string sql;
             object parameters;

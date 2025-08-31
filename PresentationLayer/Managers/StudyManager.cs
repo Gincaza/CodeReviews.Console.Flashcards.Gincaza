@@ -54,7 +54,8 @@ public class StudyManager
 
             if (studyResult.IsCorrect)
             {
-
+                // Card was answered correctly - no need to add it back to the study pile
+                // The card will naturally be removed from cardsToStudy since we already removed it at the beginning of the loop
             }
             else
             {

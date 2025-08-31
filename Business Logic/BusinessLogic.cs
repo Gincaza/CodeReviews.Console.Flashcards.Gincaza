@@ -38,7 +38,7 @@ public class BusinessLogic
 
     public OperationResult EditFlashCard(int cardId, string? word, string? translation)
     {
-        bool result = dataAccess.updateFlashCard(
+        bool result = dataAccess.UpdateFlashCard(
             cardId,
             word,
             translation);
@@ -53,7 +53,7 @@ public class BusinessLogic
 
     public OperationResult DeleteFlashCard(int cardId)
     {
-        bool result = dataAccess.deleteFlashCard(cardId);
+        bool result = dataAccess.DeleteFlashCard(cardId);
 
         if (result)
         {
@@ -98,7 +98,7 @@ public class BusinessLogic
 
     public OperationResult DeleteStack(int stackId)
     {
-        bool result = dataAccess.deleteStack(stackId);
+        bool result = dataAccess.DeleteStack(stackId);
 
         if (result)
         {
