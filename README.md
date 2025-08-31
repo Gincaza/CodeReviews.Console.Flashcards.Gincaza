@@ -1,3 +1,4 @@
+
 # Flashcards Console Application
 
 ## Features
@@ -73,7 +74,6 @@ CodeReviews.Console.Flashcards.Gincaza/
 ### 1. Creating Your First Deck
 
 - Select "Create deck" from the main menu
-
 
 - Enter a unique deck name
 - Your deck is ready for flashcards!
