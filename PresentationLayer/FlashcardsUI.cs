@@ -11,6 +11,7 @@ public class FlashcardsUI
     private readonly DeckManager _deckManager;
     private readonly CardManager _cardManager;
     private readonly StudyManager _studyManager;
+    private readonly StudyHistoryManager _studyHistoryManager;
 
     public FlashcardsUI(BusinessLogic businessLogic)
     {
@@ -19,6 +20,7 @@ public class FlashcardsUI
         _deckManager = new DeckManager(businessLogic);
         _cardManager = new CardManager(businessLogic);
         _studyManager = new StudyManager(businessLogic);
+        _studyHistoryManager = new StudyHistoryManager(businessLogic);
     }
 
     public void Run()
@@ -44,6 +46,9 @@ public class FlashcardsUI
                         break;
                     case "Start Study Lesson":
                         _studyManager.StartStudySession();
+                        break;
+                    case "View Study History":
+                        _studyHistoryManager.ShowStudyHistory();
                         break;
                     case "Exit":
                         _menuManager.ShowGoodbye();

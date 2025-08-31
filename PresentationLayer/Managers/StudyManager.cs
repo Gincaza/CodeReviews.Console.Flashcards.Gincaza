@@ -32,7 +32,8 @@ public class StudyManager
         var validCards = shuffledCards.Where(c => c != null).ToList();
         var cardsToStudy = new List<FlashCardsDto?>(validCards);
         var totalCards = validCards.Count;
-        var correctAnswers = 0;
+        var totalAttempts = 0;
+        var startTime = DateTime.Now;
 
         ShowStudyInstructions();
 
@@ -49,9 +50,11 @@ public class StudyManager
                 return;
             }
 
+            totalAttempts++;
+
             if (studyResult.IsCorrect)
             {
-                correctAnswers++;
+
             }
             else
             {
@@ -64,7 +67,12 @@ public class StudyManager
             }
         }
 
-        ShowStudyComplete(totalCards, correctAnswers);
+        var endTime = DateTime.Now;
+        var duration = endTime - startTime;
+
+        var saveResult = _businessLogic.SaveStudySession(deckId.Value, totalCards, totalAttempts, duration);
+
+        ShowStudyComplete(totalCards, totalAttempts, duration, saveResult.Success);
     }
 
     private int? SelectDeckForStudy()
@@ -154,14 +162,47 @@ public class StudyManager
         UIHelper.WaitForKeyPress();
     }
 
-    private void ShowStudyComplete(int totalCards, int correctAnswers)
+    private void ShowStudyComplete(int totalCards, int totalAttempts, TimeSpan duration, bool sessionSaved)
     {
         UIHelper.ClearScreen();
         AnsiConsole.MarkupLine("[bold green]Study session completed![/]");
         AnsiConsole.WriteLine();
         
         AnsiConsole.MarkupLine($"[green]Total cards mastered:[/] [yellow]{totalCards}[/]");
-        AnsiConsole.MarkupLine($"[green]Total attempts made:[/] [yellow]{correctAnswers}[/]");
+        AnsiConsole.MarkupLine($"[green]Total attempts made:[/] [yellow]{totalAttempts}[/]");
+        
+        if (totalAttempts > totalCards)
+        {
+            AnsiConsole.MarkupLine($"[blue]You needed[/] [yellow]{totalAttempts - totalCards}[/] [blue]extra attempts to master all cards.[/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[green]Perfect! You got all cards right on the first try![/]");
+        }
+
+        var durationText = FormatDuration(duration);
+        AnsiConsole.MarkupLine($"[green]Study duration:[/] [yellow]{durationText}[/]");
+
+        if (sessionSaved)
+        {
+            UIHelper.ShowSuccess("Session saved to history!");
+        }
+        else
+        {
+            UIHelper.ShowWarning("Session completed but could not be saved to history.");
+        }
+    }
+
+    private string FormatDuration(TimeSpan duration)
+    {
+        if (duration.TotalHours >= 1)
+        {
+            return $"{(int)duration.TotalHours:D2}:{duration.Minutes:D2}:{duration.Seconds:D2}";
+        }
+        else
+        {
+            return $"{duration.Minutes:D2}:{duration.Seconds:D2}";
+        }
     }
 
     private class StudyCardResult

@@ -70,6 +70,25 @@ public class DataAccessRepository : IDataAccess
                     ON DELETE CASCADE
             );
         END;
+        
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='StudySessions' AND xtype='U')
+        BEGIN
+            CREATE TABLE StudySessions (
+                Id INT IDENTITY(1,1) PRIMARY KEY,
+                StackId INT NOT NULL,
+                SessionDate DATETIME2 NOT NULL DEFAULT GETDATE(),
+                TotalCards INT NOT NULL,
+                TotalAttempts INT NOT NULL,
+                CorrectAnswers INT NOT NULL,
+                StudyDuration TIME NOT NULL,
+                CONSTRAINT FK_StudySessions_Stacks FOREIGN KEY (StackId)
+                    REFERENCES Stacks(Id)
+                    ON DELETE CASCADE,
+                CONSTRAINT CHK_TotalAttempts CHECK (TotalAttempts >= TotalCards),
+                CONSTRAINT CHK_CorrectAnswers CHECK (CorrectAnswers = TotalCards),
+                CONSTRAINT CHK_PositiveValues CHECK (TotalCards > 0 AND TotalAttempts > 0)
+            );
+        END;
     ";
 
         dbConnection.Execute(sql);
@@ -200,6 +219,67 @@ public class DataAccessRepository : IDataAccess
             return rowsAffected > 0;
         }
         catch { return false; }
+    }
+    public bool InsertStudySession(int stackId, int totalCards, int totalAttempts, TimeSpan duration)
+    {
+        try
+        {
+            using var connection = new SqlConnection(configString);
+
+            string sql = @"
+            INSERT INTO StudySessions (StackId, SessionDate, TotalCards, TotalAttempts, CorrectAnswers, StudyDuration) 
+            VALUES (@StackId, @SessionDate, @TotalCards, @TotalAttempts, @CorrectAnswers, @StudyDuration)";
+
+            var rowsAffected = connection.Execute(sql, new
+            {
+                StackId = stackId,
+                SessionDate = DateTime.Now,
+                TotalCards = totalCards,
+                TotalAttempts = totalAttempts,
+                CorrectAnswers = totalCards,
+                StudyDuration = duration
+            });
+
+            return rowsAffected > 0;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    public List<StudySessionDto?> GetStudySession(int? stackId = null)
+    {
+        try
+        {
+            using var connection = new SqlConnection(configString);
+
+            string sql;
+            object parameters;
+
+            if (stackId.HasValue)
+            {
+                sql = @"SELECT Id, StackId, SessionDate, TotalCards, TotalAttempts, CorrectAnswers, StudyDuration 
+                    FROM StudySessions 
+                    WHERE StackId = @StackId 
+                    ORDER BY SessionDate DESC";
+                parameters = new { StackId = stackId.Value };
+            }
+            else
+            {
+                sql = @"SELECT Id, StackId, SessionDate, TotalCards, TotalAttempts, CorrectAnswers, StudyDuration 
+                    FROM StudySessions 
+                    ORDER BY SessionDate DESC";
+                parameters = new { };
+            }
+
+            var studySessions = connection.Query<StudySessionDto>(sql, parameters).ToList();
+
+            return studySessions.Cast<StudySessionDto?>().ToList();
+        }
+        catch (Exception)
+        {
+            return new List<StudySessionDto?>();
+        }
     }
 }
  
