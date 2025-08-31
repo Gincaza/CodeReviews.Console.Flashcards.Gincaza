@@ -65,6 +65,7 @@ CodeReviews.Console.Flashcards.Gincaza/
 ## ?? How to Use
 
 ### 1. Creating Your First Deck
+
 - Select "Create deck" from the main menu
 - Enter a unique deck name
 - Your deck is ready for flashcards!
@@ -115,17 +116,20 @@ To modify the connection string, edit the `configString` property in `DataAccess
 ## Key Features Explained
 
 ### Smart Study System
+
 - Cards are shuffled for each session
 - Incorrect answers cause cards to be re-queued
 - Sessions continue until all cards are mastered
 - Progress tracking with attempt counting
 
 ### Interactive Console UI
+
 - Real-time progress indicators during study
 - Clear feedback for correct/incorrect answers
 - Formatted duration and statistics display
 
 ### Data Persistence
+
 - Automatic database and table creation
 - Foreign key relationships for data integrity
 - Study session history with detailed metrics
