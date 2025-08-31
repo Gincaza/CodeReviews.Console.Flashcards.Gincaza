@@ -1,4 +1,4 @@
-﻿namespace Business_Logic.DTO;
+﻿namespace Business_Logic.Dto;
 public class StacksDTO
 {
     public int Id { get; set; }

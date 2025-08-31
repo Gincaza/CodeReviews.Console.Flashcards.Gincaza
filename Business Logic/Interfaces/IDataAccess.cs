@@ -1,4 +1,4 @@
-﻿using Business_Logic.DTO;
+﻿using Business_Logic.Dto;
 namespace Business_Logic.Interfaces;
 
 public interface IDataAccess

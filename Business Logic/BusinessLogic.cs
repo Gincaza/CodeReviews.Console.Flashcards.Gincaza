@@ -1,4 +1,4 @@
-﻿using Business_Logic.DTO;
+﻿using Business_Logic.Dto;
 using Business_Logic.Interfaces;
 using Business_Logic.Messages;
 namespace Business_Logic;

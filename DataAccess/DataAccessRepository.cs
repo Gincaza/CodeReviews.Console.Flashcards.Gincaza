@@ -1,5 +1,5 @@
 ﻿using Business_Logic.Interfaces;
-using Business_Logic.DTO;
+using Business_Logic.Dto;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
