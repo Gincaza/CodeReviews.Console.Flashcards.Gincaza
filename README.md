@@ -1,7 +1,3 @@
-# Flashcards Console Application
-
-A comprehensive console-based flashcards application built with C# and .NET 8, featuring an interactive study system with progress tracking and beautiful terminal UI.
-
 ## Features
 
 - **Deck Management**: Create, view, and delete flashcard decks
