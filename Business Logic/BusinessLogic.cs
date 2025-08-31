@@ -75,16 +75,16 @@ public class BusinessLogic
         return new List<FlashCardsDto?>();
     }
 
-    public List<StacksDTO?> ListAllDecks()
+    public List<StacksDto?> ListAllDecks()
     {
-        List<StacksDTO?> stacksDTOs = dataAccess.GetStacks();
+        List<StacksDto?> stacksDTOs = dataAccess.GetStacks();
 
         if (stacksDTOs != null && stacksDTOs.Count > 0) 
         { 
             return stacksDTOs; 
         }
 
-        return new List<StacksDTO?>();
+        return new List<StacksDto?>();
     }
 
     public List<FlashCardsDto?> GetShuffledCards(int stackId)
@@ -136,7 +136,7 @@ public class BusinessLogic
         return new List<StudySessionDto?>();
     }
 
-    private void Shuffle(List<FlashCardsDTO?> cards)
+    private void Shuffle(List<FlashCardsDto?> cards)
     {
         int n = cards.Count;
         Random rng = new();

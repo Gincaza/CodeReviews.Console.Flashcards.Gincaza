@@ -94,18 +94,18 @@ public class DataAccessRepository : IDataAccess
         dbConnection.Execute(sql);
     }
 
-    public List<StacksDTO?> GetStacks()
+    public List<StacksDto?> GetStacks()
     {
         try
         {
             using var connection = new SqlConnection(configString);
 
-            return connection.Query<StacksDTO>(
-                "SELECT Id, Title FROM Stacks ORDER BY Title").Cast<StacksDTO?>().ToList();
+            return connection.Query<StacksDto>(
+                "SELECT Id, Title FROM Stacks ORDER BY Title").Cast<StacksDto?>().ToList();
         }
         catch (Exception)
         {
-            return new List<StacksDTO?>();
+            return new List<StacksDto?>();
         }
     }
 

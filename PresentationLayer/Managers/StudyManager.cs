@@ -23,14 +23,14 @@ public class StudyManager
 
         var shuffledCards = _businessLogic.GetShuffledCards(deckId.Value);
 
-        if (!shuffledCards.Any() || shuffledCards.All(c => c == null))
+        if (!shuffledCards.Any() || shuffledCards.All(c => c is null))
         {
             UIHelper.ShowWarning("This deck has no cards to study.");
             return;
         }
 
-        var validCards = shuffledCards.Where(c => c != null).ToList();
-        var cardsToStudy = new List<FlashCardsDto?>(validCards);
+        var validCards = shuffledCards.Where(c => c is not null).Cast<FlashCardsDto>().ToList();
+        var cardsToStudy = new List<FlashCardsDto>(validCards);
         var totalCards = validCards.Count;
         var totalAttempts = 0;
         var startTime = DateTime.Now;
@@ -39,7 +39,7 @@ public class StudyManager
 
         while (cardsToStudy.Count > 0)
         {
-            var currentCard = cardsToStudy[0]!;
+            var currentCard = cardsToStudy[0];
             cardsToStudy.RemoveAt(0);
 
             var studyResult = ProcessCard(currentCard, cardsToStudy.Count, totalCards);

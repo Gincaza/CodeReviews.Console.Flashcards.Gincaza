@@ -5,7 +5,7 @@ public interface IDataAccess
 {
     string configString { get; }
 
-    List<StacksDTO?> GetStacks();
+    List<StacksDto?> GetStacks();
     List<FlashCardsDto?> GetFlashCards(int stackId);
     bool CreateFlashCard(string word,string translation, int stackId);
     bool CreateStacks(string title);

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Business_Logic.Dto;
-public class FlashCardsDTO
+public class FlashCardsDto
 {
     public int Id { get; set; }
     public required string Word { get; set; }
