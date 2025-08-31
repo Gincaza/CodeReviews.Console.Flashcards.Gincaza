@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Business_Logic.Messages;
+﻿namespace Business_Logic.Messages;
 public class OperationResult
 {
     public bool Success;

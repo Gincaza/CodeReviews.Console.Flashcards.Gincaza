@@ -14,7 +14,7 @@ public class BusinessLogic
 
     public OperationResult CreateDeck(string title)
     {
-        bool success = dataAccess.createStacks(title);
+        bool success = dataAccess.CreateStacks(title);
 
         if (success)
         {
@@ -26,7 +26,7 @@ public class BusinessLogic
 
     public OperationResult CreateFlashCard(string word, string translation, int stackId)
     {
-        bool result = dataAccess.createFlashCard(word, translation, stackId);
+        bool result = dataAccess.CreateFlashCard(word, translation, stackId);
 
         if (result)
         {

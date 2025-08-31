@@ -90,7 +90,7 @@ public class DataAccessRepository : IDataAccess
         }
     }
 
-    public bool createFlashCard(string word, string translation, int stackId)
+    public bool CreateFlashCard(string word, string translation, int stackId)
     {
         try
         {
@@ -115,7 +115,7 @@ public class DataAccessRepository : IDataAccess
         }
     }
     
-    public bool createStacks(string title)
+    public bool CreateStacks(string title)
     {
         if (string.IsNullOrEmpty(title)) 
             return false;
